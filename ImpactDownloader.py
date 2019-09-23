@@ -114,8 +114,8 @@ class ImpactDownloader:
         print(str(copied) + " files coppied to " + str(network_location))
 
     def download_all(self, csv_dict):
-        global download_file_path, folder, error_count, event_saved_search_name
-        with autohandshake.HandshakeSession("https://oakland.joinhandshake.com", "nbfurlo@oakland.edu", None, 3000,
+        global email, school_url, download_file_path, folder, error_count, event_saved_search_name
+        with autohandshake.HandshakeSession(school_url, email, None, 3000,
                                             None, os.path.abspath(download_file_path)) as browser:
             csv_dict_reverse = {v: k for k, v in csv_dict.items()}
             for i in tqdm(csv_dict):
@@ -155,20 +155,21 @@ class ImpactDownloader:
 # Create or load config file and assign variables.
 def load_config():
     # If there is no config file, make one.
-    global username, password, input_file_path, number_of_rows, download_file_path, network_location, log_enabled, days_until_delete, event_saved_search_name
+    global school_url, email, password, input_file_path, number_of_rows, download_file_path, network_location, log_enabled, days_until_delete, event_saved_search_name
     config = configparser.ConfigParser()
     my_file = Path("ImpactDownloader.config")
     if not my_file.is_file():
         file = open("ImpactDownloader.config", "w+")
         file.write(
-            "[DEFAULT]\nUSERNAME = \nINPUT_CSV_FILE_PATH = \nNUMBER_OF_ROWS = \nEVENT_SAVED_SEARCH_NAME = \nDOWNLOAD_LOCATION = "
+            "[DEFAULT]\nEMAIL = \nSCHOOL_URL= \nINPUT_CSV_FILE_PATH = \nNUMBER_OF_ROWS = \nEVENT_SAVED_SEARCH_NAME = \nDOWNLOAD_LOCATION = "
             "\nNETWORK_LOCATION =  \nLOG_TO_FILE = \nDELETE_AFTER_DAYS = \n")
         messagebox.showinfo("Warning",
                             "Config file created. Please add a CSV file path and relaunch the program.")
         sys.exit()
     # Read config file and set global variables
     config.read('ImpactDownloader.config')
-    username = config['DEFAULT']['USERNAME']
+    email = config['DEFAULT']['EMAIL']
+    school_url = config['DEFAULT']['SCHOOL_URL']
     input_file_path = config['DEFAULT']['INPUT_CSV_FILE_PATH']
     number_of_rows = int(config['DEFAULT']['NUMBER_OF_ROWS'])
     event_saved_search_name = str(config['DEFAULT']['EVENT_SAVED_SEARCH_NAME'])
