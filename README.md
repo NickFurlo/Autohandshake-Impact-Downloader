@@ -36,10 +36,10 @@ Prerequisites
 
 CSV Format
 
-   	Row one should consist of headers for the columns. Do not put data in this row.
-    	Column one should contain the name of the data. This name is used for the folder and filenames. This will determine
-    	the folder that your downloads will be transferred too inside of the NETWORK_LOCATION folder.
-    	Column two should have the links to insights, event, or survey data.
+   	Row one should consist of headers for the columns. Do not put data in this row.	Column one should contain the name of
+	the data. This name is used for the folder and filenames. This will determine the folder that your downloads will be
+	transferred too inside of the NETWORK_LOCATION folder. Column two should have the links to insights, event, or survey
+	data.
 
 Versioning
 
