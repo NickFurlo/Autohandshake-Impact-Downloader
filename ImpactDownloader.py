@@ -120,9 +120,9 @@ class ImpactDownloader:
             csv_dict_reverse = {v: k for k, v in csv_dict.items()}
             for i in tqdm(csv_dict):
                 try:
+                    folder = csv_dict_reverse[csv_dict[i]]
                     if 'insights_page' in csv_dict.get(i):
                         # Passes reversed URL dictionary at i for folder name
-                        folder = csv_dict_reverse[csv_dict[i]]
                         filename = folder + datetime.now().strftime("_%Y-%m-%d") + ".csv"
                         insights_page = InsightsPage(csv_dict[i], browser)
                         if (i == "appointment"):
@@ -133,15 +133,20 @@ class ImpactDownloader:
                                                         file_type=autohandshake.FileType.CSV, max_wait_time=9999999)
 
                     elif 'surveys' in csv_dict.get(i):
-                        survey_id = str(csv_dict.get(i))[-4:]
+                        survey_id = str(csv_dict.get(i))[-5:]
+                        print("SID: "+survey_id)
                         survey = SurveyPage(survey_id, browser)
                         survey.download_responses(download_file_path)
+                        ImpactDownloader.survey_rename(self)
 
                     elif 'events' in csv_dict.get(i):
                         events_page = EventsPage(browser)
                         print("\n" + event_saved_search_name)
                         events_page.load_saved_search(event_saved_search_name)
+                        #browser.click_element_by_xpath("/html/body/div[2]/div[3]/div/div[2]/div[1]/form/div/div[2]/div/div[3]/div/div[1]/ul/li[1]/div/h3/span")
                         events_page.download_event_data(download_file_path, wait_time=5000)
+                        ImpactDownloader.event_rename(self)
+
                     else:
                         print("\ncould not download" + str(i))
                         error_count = error_count + 1
@@ -151,6 +156,33 @@ class ImpactDownloader:
             print("\nErrors: " + str(error_count))
             return
 
+    #Rename survey files.
+    def survey_rename(self):
+        print("survey rename")
+        surveyLocation = os.path.join(download_file_path, 'survey_response_download*.csv')
+        surveyLocation = os.path.normpath(surveyLocation)
+        print("SL: "+ surveyLocation)
+        files = glob.glob(surveyLocation)
+        print(files)
+        for file in files:
+            print("Survey File: " + str(file) + "     Folder: " + str(folder))
+            dst = os.path.join(download_file_path, folder + datetime.now().strftime("_%Y-%m-%d") + ".csv")
+            dst = os.path.normpath(dst)
+            os.rename(file, dst)
+
+    #Rename event files.
+    def event_rename(self):
+        print("event rename")
+        eventLocation = os.path.join(download_file_path, 'event_download*.csv')
+        eventLocation = os.path.normpath(eventLocation)
+        print("EL: "+ eventLocation)
+        files = glob.glob(eventLocation)
+        print(files)
+        for file in files:
+            print("Event File: "+str(file)+"     Folder: "+ str(folder))
+            dst = os.path.join(download_file_path, folder + datetime.now().strftime("_%Y-%m-%d") + ".csv")
+            dst = os.path.normpath(dst)
+            os.rename(file,dst)
 
 # Create or load config file and assign variables.
 def load_config():
@@ -177,6 +209,10 @@ def load_config():
     network_location = config['DEFAULT']['NETWORK_LOCATION']
     log_enabled = config['DEFAULT']['LOG_TO_FILE']
     days_until_delete = config['DEFAULT']['DELETE_AFTER_DAYS']
+    # Quit if there is no CSV path set in the config file
+    if input_file_path is "":
+        messagebox.showinfo("Warning", "Please enter an input CSV file path into the config file and relaunch the program.")
+        sys.exit()
 
 
 # Deletes files from csv download path to make sure old downloads are gone.
@@ -192,14 +228,6 @@ def delete_csv_from_download():
     except Exception as e:
         print("Error Deleting Old Files: " + str(e))
 
-# Quit if there is no CSV path set in the config file
-
-#        if input_file_path is "":
-#            messagebox.showinfo("Warning",
-#                                "Please enter a CSV file path into the config file and relaunch the program.")
-#            sys.exit()
-
-# load CSV contents of first 2 columns, and the second row through number_of_rows into a dictionary
 
 
 def main(impact_downloader):
