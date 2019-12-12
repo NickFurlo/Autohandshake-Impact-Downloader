@@ -1,11 +1,11 @@
 # Autohandshake-Impact-Downloader
 Autohandshake Impact Downloader
 
-	This script will download csv files from handshakes insight data, survey results, and event results in bulk. It imports
-	the links to the pages through a CSV file and then downloads the data from those links and puts them in a designated
-	folder.It can also transfer those files to another location such as a network drive. You can set it to delete files
-	older than a user specified amount of time. This is a complete re-write of the HandshakeImpactDownloader. This script
-	uses the autohandshake library to handle all webpage interactions. 
+	This script will download csv files from handshakes insight data, survey results, and event results in bulk. It
+	imports	the links to the pages through a CSV file and then downloads the data from those links and puts them in a
+	designated	folder. It can also transfer those files to another location such as a network drive. You can set it to
+	delete files older than a user specified amount of time. This is a complete re-write of the
+	HandshakeImpactDownloader. This script uses the autohandshake library to handle all web page interactions.
 
 Getting Started
 
@@ -20,9 +20,9 @@ Config File
   	SCHOOL_URL: The url for your school's handshake. Ex: https://myschool.joinhandshake.com
 	INPUT_CSV_FILE_PATH: Filename or path to csv file containing links
 	NUMBER_OF_ROWS: The number of rows including the header. The first row is assumed to be the headers and will not be
-	                proccessed
+	                processed
 	DOWNLOAD_LOCATION: Path to local download location for CSV's
-	NETWORK_LOCATION: Root directory for network location to be copied to. Files will be coppied to subfolders of this
+	NETWORK_LOCATION: Root directory for network location to be copied to. Files will be copied to subfolders of this
 	                  folder with names corresponding with the left column of the CSV. Make sure these folders have been
 	                  created prior to running the script.
  	LOG_TO_FILE: True or False to enable logging
@@ -36,16 +36,25 @@ Prerequisites
 	autohandshake (Python -m pip install autohandshake)
 	Selenium (Python -m pip install selenium)
 	tqdm (Python -m pip install tqdm)
-	python-dateutil (python -m pip install python-dateutil)
+	python-dateutil (Python -m pip install python-dateutil)
+	Keyring (Python -m pip install keyring)
 
 CSV Format
 
-   	Row one should consist of headers for the columns. Do not put data in this row.	Column one should contain the name of
-	the data. This name is used for the folder and filenames. This will determine the folder that your downloads will be
-	transferred too inside of the NETWORK_LOCATION folder. Column two should have the links to insights, event, or survey
-	data.
+   	Row one should consist of headers for the columns. Do not put data in this row.	Column one should contain the name
+   	of the data. This name is used for the folder and filenames. This will determine the folder that your downloads will
+   	be transferred too inside of the NETWORK_LOCATION folder. Column two should have the links to insights, event, or
+   	survey data.
 
-Versioning
+Handshake Credentials
+
+    Autohandshake uses Keyring to get credentials from Windows Credential Manager. You will need to add your handshake
+    login information as a "Generic Credential" in the Windows Credential Manager. The "Internet or network address"
+    should be your school's handshake URL. (Ex: https://myschool.joinhandshake.com). Make sure your password is your
+    handshake password, not your single sign on password. Given many schools are using SSO, you may need to reset the
+    handshake password in order to use it.
+
+Version
 
 	Version 2.0
 
