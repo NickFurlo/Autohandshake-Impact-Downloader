@@ -222,7 +222,6 @@ def delete_csv_from_download():
 
 
 def main(impact_downloader):
-    print("Main Method: ")
     global input_file_path, number_of_rows, download_count, missed_urls, log_to_file, download_file_path, days_until_delete
     download_count = 0
     download_file_path = ""

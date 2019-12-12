@@ -19,20 +19,24 @@ Config File
 	EMAIL: Email to be entered into handshake for login.
   	SCHOOL_URL: The url for your school's handshake. Ex: https://myschool.joinhandshake.com
 	INPUT_CSV_FILE_PATH: Filename or path to csv file containing links
-	NUMBER_OF_ROWS: The number of rows including the header.
-  	EVENT_SAVED_SEARCH_NAME: Name of the saved search for event page. 
-	DOWNLOAD_LOCATION: Path to download location for CSV's
-	NETWORK_LOCATION: Root directory for network location to be copied to.
+	NUMBER_OF_ROWS: The number of rows including the header. The first row is assumed to be the headers and will not be
+	                proccessed
+	DOWNLOAD_LOCATION: Path to local download location for CSV's
+	NETWORK_LOCATION: Root directory for network location to be copied to. Files will be coppied to subfolders of this
+	                  folder with names corresponding with the left column of the CSV. Make sure these folders have been
+	                  created prior to running the script.
  	LOG_TO_FILE: True or False to enable logging
-  	DELETE_AFTER_DAYS: Integer value to check dates of old downloads against.
+  	DELETE_AFTER_DAYS: Looks at the files in the network location folders and deletes all of them older than this amount
+  	                   of days
 
 Prerequisites
 
 	Google Chrome
-	Python 3.6.5
+	Python 3.0+
 	autohandshake (Python -m pip install autohandshake)
 	Selenium (Python -m pip install selenium)
 	tqdm (Python -m pip install tqdm)
+	python-dateutil (python -m pip install python-dateutil)
 
 CSV Format
 
@@ -43,7 +47,7 @@ CSV Format
 
 Versioning
 
-	Version 0.9
+	Version 2.0
 
 Authors
 
